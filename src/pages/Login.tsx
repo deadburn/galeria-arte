@@ -55,13 +55,13 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black-deep px-4">
-      <div className="w-full max-w-md">
+      <div className="animate-fade-in-up w-full max-w-md">
         <h1 className="mb-8 text-center font-heading text-4xl text-white-off">
           Iniciar Sesión
         </h1>
 
         {serverError && (
-          <div className="mb-4 border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
+          <div className="mb-4 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
             {serverError}
           </div>
         )}
@@ -74,7 +74,7 @@ export default function Login() {
             <input
               type="email"
               {...register("email")}
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.email && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -90,7 +90,7 @@ export default function Login() {
             <input
               type="password"
               {...register("password")}
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.password && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -102,7 +102,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gold-accent py-3 font-body text-sm tracking-wider text-black-deep transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="w-full rounded-lg bg-gold-accent py-3 font-body text-sm tracking-wider text-black-deep transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {isSubmitting ? "Ingresando..." : "Ingresar"}
           </button>

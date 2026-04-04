@@ -1,5 +1,5 @@
 import { supabase } from "./client";
-import type { Artwork } from "../types";
+import type { Artwork, ArtistGroup } from "../types";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -7,11 +7,36 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 export async function getApprovedArtworks(): Promise<Artwork[]> {
   const { data, error } = await supabase
     .from("artworks")
-    .select("*, profiles(name)")
+    .select("*, profiles(name, bio, technique, portfolio_url)")
     .order("created_at", { ascending: false });
 
   if (error) throw error;
   return (data ?? []) as Artwork[];
+}
+
+export function groupByArtist(artworks: Artwork[]): ArtistGroup[] {
+  const map = new Map<string, ArtistGroup>();
+
+  for (const art of artworks) {
+    const existing = map.get(art.artist_id);
+    if (existing) {
+      existing.artworks.push(art);
+      existing.count++;
+    } else {
+      map.set(art.artist_id, {
+        artist_id: art.artist_id,
+        name: art.profiles?.name ?? "Artista",
+        bio: art.profiles?.bio ?? null,
+        technique: art.profiles?.technique ?? null,
+        portfolio_url: art.profiles?.portfolio_url ?? null,
+        latestArtwork: art,
+        artworks: [art],
+        count: 1,
+      });
+    }
+  }
+
+  return Array.from(map.values());
 }
 
 export async function getMyArtworks(artistId: string): Promise<Artwork[]> {

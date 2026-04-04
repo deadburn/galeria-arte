@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCurrentProfile } from "../../lib/supabase/auth";
+import { getCurrentProfile, updateProfile } from "../../lib/supabase/auth";
 import {
   getMyArtworks,
   createArtwork,
@@ -23,6 +23,14 @@ export default function ArtistDashboard() {
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Artwork | null>(null);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    bio: "",
+    technique: "",
+    portfolio_url: "",
+  });
+  const [savingProfile, setSavingProfile] = useState(false);
 
   useEffect(() => {
     init();
@@ -97,6 +105,37 @@ export default function ArtistDashboard() {
     setView("edit");
   }
 
+  function openProfileEdit() {
+    if (!profile) return;
+    setProfileForm({
+      name: profile.name,
+      bio: profile.bio ?? "",
+      technique: profile.technique ?? "",
+      portfolio_url: profile.portfolio_url ?? "",
+    });
+    setEditingProfile(true);
+  }
+
+  async function handleProfileSave() {
+    if (!profile) return;
+    setSavingProfile(true);
+    setError("");
+    try {
+      const updated = await updateProfile(profile.id, {
+        name: profileForm.name,
+        bio: profileForm.bio || null,
+        technique: profileForm.technique || null,
+        portfolio_url: profileForm.portfolio_url || null,
+      });
+      setProfile(updated);
+      setEditingProfile(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al guardar perfil");
+    } finally {
+      setSavingProfile(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black-deep">
@@ -106,7 +145,7 @@ export default function ArtistDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black-deep px-4 py-8 sm:px-6 sm:py-12">
+    <div className="animate-fade-in-up min-h-screen bg-black-deep px-4 py-8 sm:px-6 sm:py-12">
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
@@ -119,25 +158,33 @@ export default function ArtistDashboard() {
               {artworks.length === 1 ? "obra" : "obras"}
             </p>
           </div>
-          {view === "list" && (
+          <div className="flex gap-3">
             <button
-              onClick={() => setView("create")}
-              className="border border-gold-accent px-6 py-3 font-body text-sm font-semibold uppercase tracking-widest text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep"
+              onClick={openProfileEdit}
+              className="rounded-lg border border-white-off/20 px-4 py-2 font-body text-xs uppercase tracking-widest text-white-off/50 transition-colors hover:border-white-off/40 hover:text-white-off sm:px-5 sm:py-3 sm:text-sm"
             >
-              + Nueva Obra
+              Mi Perfil
             </button>
-          )}
+            {view === "list" && (
+              <button
+                onClick={() => setView("create")}
+                className="rounded-lg border border-gold-accent px-4 py-2 font-body text-xs font-semibold uppercase tracking-widest text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep sm:px-6 sm:py-3 sm:text-sm"
+              >
+                + Nueva Obra
+              </button>
+            )}
+          </div>
         </div>
 
         {error && (
-          <div className="mb-6 border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
+          <div className="mb-6 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
             {error}
           </div>
         )}
 
         {/* Create / Edit form */}
         {(view === "create" || view === "edit") && (
-          <div className="mb-12 border border-white-off/10 p-4 sm:p-6 md:p-8">
+          <div className="mb-12 rounded-xl border border-white-off/10 p-4 sm:p-6 md:p-8">
             <h2 className="mb-6 font-heading text-2xl text-white-off">
               {view === "create" ? "Nueva Obra" : `Editar: ${editing?.title}`}
             </h2>
@@ -169,7 +216,7 @@ export default function ArtistDashboard() {
             {artworks.map((artwork) => (
               <div
                 key={artwork.id}
-                className="group overflow-hidden border border-white-off/10 transition-colors hover:border-white-off/20"
+                className="group overflow-hidden rounded-xl border border-white-off/10 transition-colors hover:border-white-off/20"
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-white-off/5">
@@ -237,6 +284,99 @@ export default function ArtistDashboard() {
           onCancel={() => setConfirmDelete(null)}
           loading={deletingId === confirmDelete.id}
         />
+      )}
+
+      {/* Profile edit modal */}
+      {editingProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setEditingProfile(false)}
+          />
+          <div className="relative mx-4 w-full max-w-lg rounded-2xl border border-white-off/10 bg-black-deep p-6 sm:p-8">
+            <h2 className="mb-6 font-heading text-2xl text-white-off">
+              Editar Perfil
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.name}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, name: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off outline-none focus:border-gold-accent"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                  Bio
+                </label>
+                <textarea
+                  value={profileForm.bio}
+                  onChange={(e) =>
+                    setProfileForm({ ...profileForm, bio: e.target.value })
+                  }
+                  rows={3}
+                  placeholder="Cuéntanos sobre ti..."
+                  className="w-full resize-none rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                  Técnica
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.technique}
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      technique: e.target.value,
+                    })
+                  }
+                  placeholder="Óleo, acuarela..."
+                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                  Instagram
+                </label>
+                <input
+                  type="url"
+                  value={profileForm.portfolio_url}
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      portfolio_url: e.target.value,
+                    })
+                  }
+                  placeholder="https://instagram.com/tu_usuario"
+                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                />
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                onClick={() => setEditingProfile(false)}
+                className="px-5 py-2.5 font-body text-sm uppercase tracking-widest text-white-off/50 transition-colors hover:text-white-off"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleProfileSave}
+                disabled={savingProfile || !profileForm.name.trim()}
+                className="rounded-lg border border-gold-accent px-6 py-2.5 font-body text-sm font-semibold uppercase tracking-widest text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep disabled:opacity-50"
+              >
+                {savingProfile ? "Guardando..." : "Guardar"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

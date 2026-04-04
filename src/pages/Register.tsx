@@ -24,7 +24,7 @@ export default function Register() {
       await signUp(data.email, data.password, {
         name: data.name,
         technique: data.technique,
-        portfolio_url: data.portfolio_url,
+        portfolio_url: data.portfolio_url ?? "",
       });
       setSubmitted(true);
     } catch (err) {
@@ -37,7 +37,7 @@ export default function Register() {
   if (submitted) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black-deep px-4">
-        <div className="w-full max-w-md text-center">
+        <div className="animate-fade-in-up w-full max-w-md text-center">
           <h1 className="font-heading text-4xl text-white-off">
             ¡Registro exitoso!
           </h1>
@@ -47,7 +47,7 @@ export default function Register() {
           </p>
           <Link
             to="/login"
-            className="mt-8 inline-block border border-gold-accent px-6 py-3 font-body text-sm tracking-wider text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep"
+            className="mt-8 inline-block rounded-lg border border-gold-accent px-6 py-3 font-body text-sm tracking-wider text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep"
           >
             Ir al login
           </Link>
@@ -58,13 +58,13 @@ export default function Register() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black-deep px-4">
-      <div className="w-full max-w-md">
+      <div className="animate-fade-in-up w-full max-w-md">
         <h1 className="mb-8 text-center font-heading text-4xl text-white-off">
           Registro de Artista
         </h1>
 
         {serverError && (
-          <div className="mb-4 border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
+          <div className="mb-4 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
             {serverError}
           </div>
         )}
@@ -76,7 +76,7 @@ export default function Register() {
             </label>
             <input
               {...register("name")}
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.name && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -92,7 +92,7 @@ export default function Register() {
             <input
               type="email"
               {...register("email")}
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.email && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -108,7 +108,7 @@ export default function Register() {
             <input
               type="password"
               {...register("password")}
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.password && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -124,7 +124,7 @@ export default function Register() {
             <input
               {...register("technique")}
               placeholder="Ej: Óleo, Acuarela, Fotografía..."
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off placeholder:text-white-off/30 outline-none transition-colors focus:border-gold-accent"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off placeholder:text-white-off/30 outline-none transition-colors focus:border-gold-accent"
             />
             {errors.technique && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -135,12 +135,12 @@ export default function Register() {
 
           <div>
             <label className="mb-1 block font-body text-sm text-white-off/70">
-              URL de portafolio (opcional)
+              Instagram (opcional)
             </label>
             <input
               {...register("portfolio_url")}
-              placeholder="https://..."
-              className="w-full border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off placeholder:text-white-off/30 outline-none transition-colors focus:border-gold-accent"
+              placeholder="https://instagram.com/tu_usuario"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off placeholder:text-white-off/30 outline-none transition-colors focus:border-gold-accent"
             />
             {errors.portfolio_url && (
               <p className="mt-1 font-body text-xs text-red-400">
@@ -152,7 +152,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gold-accent py-3 font-body text-sm tracking-wider text-black-deep transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="w-full rounded-lg bg-gold-accent py-3 font-body text-sm tracking-wider text-black-deep transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {isSubmitting ? "Registrando..." : "Registrarse"}
           </button>

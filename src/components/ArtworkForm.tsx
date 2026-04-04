@@ -54,12 +54,12 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
   }
 
   const inputClass =
-    "w-full border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent";
+    "w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
+        <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
           {error}
         </div>
       )}
@@ -71,7 +71,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
         </label>
         <div
           onClick={() => fileRef.current?.click()}
-          className="relative flex min-h-[200px] cursor-pointer items-center justify-center overflow-hidden border border-dashed border-white-off/20 transition-colors hover:border-gold-accent/50"
+          className="relative flex min-h-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-white-off/20 transition-colors hover:border-gold-accent/50"
         >
           {preview ? (
             <img
@@ -155,7 +155,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
         <button
           type="submit"
           disabled={submitting}
-          className="border border-gold-accent px-8 py-3 font-body text-sm font-semibold uppercase tracking-widest text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep disabled:opacity-50"
+          className="rounded-lg border border-gold-accent px-8 py-3 font-body text-sm font-semibold uppercase tracking-widest text-gold-accent transition-colors hover:bg-gold-accent hover:text-black-deep disabled:opacity-50"
         >
           {submitting ? "Guardando..." : initial ? "Actualizar" : "Publicar"}
         </button>

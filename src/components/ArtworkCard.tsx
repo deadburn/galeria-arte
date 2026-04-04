@@ -1,14 +1,18 @@
-import type { Artwork } from "../lib/types";
+import type { ArtistGroup } from "../lib/types";
 
-interface ArtworkCardProps {
-  artwork: Artwork;
+interface Props {
+  group: ArtistGroup;
+  onClick: () => void;
 }
 
-export default function ArtworkCard({ artwork }: ArtworkCardProps) {
-  const artistName = artwork.profiles?.name ?? "Artista";
+export default function ArtworkCard({ group, onClick }: Props) {
+  const artwork = group.latestArtwork;
 
   return (
-    <div className="group">
+    <div
+      onClick={onClick}
+      className="group cursor-pointer overflow-hidden rounded-xl border border-white-off/10 transition-all duration-300 hover:border-white-off/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/30"
+    >
       <div className="aspect-square overflow-hidden">
         {artwork.image_url ? (
           <img
@@ -25,15 +29,16 @@ export default function ArtworkCard({ artwork }: ArtworkCardProps) {
         )}
       </div>
 
-      <div className="mt-4 space-y-1">
-        <h3 className="font-heading text-xl text-white-off">{artwork.title}</h3>
-        <p className="font-body text-sm text-white-off/50">{artistName}</p>
-        {artwork.technique && (
-          <p className="font-body text-xs text-white-off/30">
-            {artwork.technique}
-            {artwork.year ? ` · ${artwork.year}` : ""}
+      <div className="px-5 py-4 text-center">
+        <h3 className="font-heading text-xl text-gold-accent">{group.name}</h3>
+        {group.technique && (
+          <p className="mt-1 font-body text-xs tracking-wide text-white-off/40">
+            {group.technique}
           </p>
         )}
+        <p className="mt-2 font-body text-xs text-white-off/30">
+          {group.count} {group.count === 1 ? "obra" : "obras"}
+        </p>
       </div>
     </div>
   );

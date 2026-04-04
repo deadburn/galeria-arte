@@ -55,3 +55,20 @@ export async function getCurrentProfile(): Promise<Profile | null> {
   if (error) return null;
   return data as Profile;
 }
+
+export async function updateProfile(
+  id: string,
+  updates: Partial<
+    Pick<Profile, "name" | "bio" | "technique" | "portfolio_url">
+  >,
+): Promise<Profile> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as Profile;
+}

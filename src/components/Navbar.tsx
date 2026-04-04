@@ -99,8 +99,8 @@ export default function Navbar() {
 
       {/* Mobile menu overlay */}
       {open && (
-        <div className="fixed inset-0 z-40 bg-black-deep/95 backdrop-blur-sm md:hidden">
-          <div className="flex min-h-screen flex-col items-center justify-center gap-8">
+        <div className="animate-fade-in fixed inset-0 z-40 bg-black-deep/95 backdrop-blur-sm md:hidden">
+          <div className="animate-slide-up flex min-h-screen flex-col items-center justify-center gap-8">
             <Link to="/" onClick={closeMenu} className={linkClass + " text-lg"}>
               Galería
             </Link>

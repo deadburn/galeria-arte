@@ -45,7 +45,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black-deep px-4 py-12">
+    <div className="animate-fade-in-up min-h-screen bg-black-deep px-4 py-12">
       <div className="mx-auto max-w-4xl">
         <h1 className="mb-2 font-heading text-3xl text-white-off sm:text-4xl">
           Panel de Administración
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
         </p>
 
         {error && (
-          <div className="mb-6 border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
+          <div className="mb-6 rounded-lg border border-red-500/50 bg-red-500/10 p-3 text-center font-body text-sm text-red-400">
             {error}
           </div>
         )}
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
             {artists.map((artist) => (
               <div
                 key={artist.id}
-                className="border border-white-off/10 p-6 transition-colors hover:border-white-off/20"
+                className="rounded-xl border border-white-off/10 p-6 transition-colors hover:border-white-off/20"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0 flex-1">
@@ -119,14 +119,14 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => handleAction(artist, "APPROVED")}
                       disabled={actionId === artist.id}
-                      className="flex-1 border border-emerald-500 px-5 py-2 font-body text-sm text-emerald-400 transition-colors hover:bg-emerald-500 hover:text-black-deep disabled:opacity-50 sm:flex-none"
+                      className="flex-1 rounded-lg border border-emerald-500 px-5 py-2 font-body text-sm text-emerald-400 transition-colors hover:bg-emerald-500 hover:text-black-deep disabled:opacity-50 sm:flex-none"
                     >
                       Aprobar
                     </button>
                     <button
                       onClick={() => handleAction(artist, "REJECTED")}
                       disabled={actionId === artist.id}
-                      className="flex-1 border border-red-500 px-5 py-2 font-body text-sm text-red-400 transition-colors hover:bg-red-500 hover:text-black-deep disabled:opacity-50 sm:flex-none"
+                      className="flex-1 rounded-lg border border-red-500 px-5 py-2 font-body text-sm text-red-400 transition-colors hover:bg-red-500 hover:text-black-deep disabled:opacity-50 sm:flex-none"
                     >
                       Rechazar
                     </button>

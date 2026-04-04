@@ -23,5 +23,16 @@ export interface Artwork {
   image_url: string | null;
   created_at: string;
   updated_at: string;
-  profiles?: { name: string };
+  profiles?: Pick<Profile, "name" | "bio" | "technique" | "portfolio_url">;
+}
+
+export interface ArtistGroup {
+  artist_id: string;
+  name: string;
+  bio: string | null;
+  technique: string | null;
+  portfolio_url: string | null;
+  latestArtwork: Artwork;
+  artworks: Artwork[];
+  count: number;
 }
