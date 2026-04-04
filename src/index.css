@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black-deep: #0a0a0a;
+  --color-white-off: #f5f0eb;
+  --color-gold-accent: #c9a84c;
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "Inter", sans-serif;
+}

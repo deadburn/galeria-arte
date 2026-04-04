@@ -1,0 +1,57 @@
+import { supabase } from "./client";
+import type { Profile } from "../types";
+
+export async function signUp(
+  email: string,
+  password: string,
+  profile: { name: string; technique: string; portfolio_url: string },
+) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        name: profile.name,
+        technique: profile.technique,
+        portfolio_url: profile.portfolio_url || "",
+      },
+    },
+  });
+
+  if (error) throw error;
+  if (!data.user) throw new Error("No se pudo crear el usuario");
+
+  return data;
+}
+
+export async function signIn(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+}
+
+export async function getCurrentProfile(): Promise<Profile | null> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error) return null;
+  return data as Profile;
+}
