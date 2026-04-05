@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ===== CAMBIA ESTA URL CUANDO TENGAS LA DE PRODUCCIÓN =====
-const TARGET_URL = "https://galeria-arte.vercel.app";
+const TARGET_URL = "https://galeria-arte-phi.vercel.app";
 // ===========================================================
 
 const outputPath = resolve(__dirname, "../public/qr-galeria.svg");
