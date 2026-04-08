@@ -49,23 +49,27 @@ export default function Navbar() {
       <nav className="border-b border-black-deep/8 bg-white-off">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6">
           {/* Left: Both logos side by side */}
-          <Link
-            to="/"
-            onClick={closeMenu}
-            className="flex shrink-0 items-center gap-2 sm:gap-3"
-          >
-            <img
-              src="/logo.png"
-              alt="Galeria Virtual Jackson Marquez"
-              className="h-14 w-auto sm:h-20 md:h-24"
-            />
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <Link to="/" onClick={closeMenu}>
+              <img
+                src="/logo.png"
+                alt="Galeria Virtual Jackson Marquez"
+                className="h-14 w-auto sm:h-20 md:h-24"
+              />
+            </Link>
             <div className="h-8 w-px bg-black-deep/10 sm:h-10" />
-            <img
-              src="/logoTP2.0.png"
-              alt="Táchira Prensa 2.0"
-              className="h-12 w-auto sm:h-18 md:h-20"
-            />
-          </Link>
+            <a
+              href="https://www.instagram.com/tachira_prensa2.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/logoTP2.0.png"
+                alt="Táchira Prensa 2.0"
+                className="h-12 w-auto sm:h-18 md:h-20"
+              />
+            </a>
+          </div>
 
           {/* Desktop links */}
           <div className="hidden items-center gap-8 md:flex">

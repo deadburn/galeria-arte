@@ -47,7 +47,7 @@ export default function Footer() {
                   Más información →
                 </button>
                 <a
-                  href="https://instagram.com/tachiraprensa2.0"
+                  href="https://www.instagram.com/tachira_prensa2.0/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 font-body text-sm text-black-deep/50 transition-colors hover:text-gold-accent"
