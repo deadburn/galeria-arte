@@ -9,6 +9,8 @@ import { signUp } from "../lib/supabase/auth";
 export default function Register() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const {
     register,
@@ -111,17 +113,54 @@ export default function Register() {
               <label className="mb-1 block font-body text-sm text-black-deep/70">
                 Contraseña
               </label>
-              <input
-                type="password"
-                {...register("password")}
-                maxLength={72}
-                autoComplete="new-password"
-                placeholder="Mín. 8 caracteres, 1 letra y 1 número"
-                className="w-full rounded-lg border border-black-deep/20 bg-transparent px-4 py-3 font-body text-black-deep placeholder:text-black-deep/30 outline-none transition-colors focus:border-gold-accent"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  maxLength={72}
+                  autoComplete="new-password"
+                  placeholder="Mín. 8 caracteres, 1 letra y 1 número"
+                  className="w-full rounded-lg border border-black-deep/20 bg-transparent px-4 py-3 pr-12 font-body text-black-deep placeholder:text-black-deep/30 outline-none transition-colors focus:border-gold-accent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-body text-xs text-black-deep/40 transition-colors hover:text-black-deep"
+                >
+                  {showPassword ? "Ocultar" : "Ver"}
+                </button>
+              </div>
               {errors.password && (
                 <p className="mt-1 font-body text-xs text-red-400">
                   {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-1 block font-body text-sm text-black-deep/70">
+                Confirmar contraseña
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirm ? "text" : "password"}
+                  {...register("confirmPassword")}
+                  maxLength={72}
+                  autoComplete="new-password"
+                  placeholder="Repite tu contraseña"
+                  className="w-full rounded-lg border border-black-deep/20 bg-transparent px-4 py-3 pr-12 font-body text-black-deep placeholder:text-black-deep/30 outline-none transition-colors focus:border-gold-accent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-body text-xs text-black-deep/40 transition-colors hover:text-black-deep"
+                >
+                  {showConfirm ? "Ocultar" : "Ver"}
+                </button>
+              </div>
+              {errors.confirmPassword && (
+                <p className="mt-1 font-body text-xs text-red-400">
+                  {errors.confirmPassword.message}
                 </p>
               )}
             </div>

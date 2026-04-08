@@ -167,13 +167,19 @@ const instagramValidation = z
   .or(z.literal(""))
   .optional();
 
-export const registerSchema = z.object({
-  name: nameValidation,
-  email: emailValidation,
-  password: passwordValidation,
-  technique: techniqueValidation,
-  portfolio_url: instagramValidation,
-});
+export const registerSchema = z
+  .object({
+    name: nameValidation,
+    email: emailValidation,
+    password: passwordValidation,
+    confirmPassword: z.string().min(1, "Confirma tu contraseña"),
+    technique: techniqueValidation,
+    portfolio_url: instagramValidation,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 

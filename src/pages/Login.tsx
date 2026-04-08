@@ -9,6 +9,7 @@ import { getCurrentProfile } from "../lib/supabase/auth";
 
 export default function Login() {
   const [serverError, setServerError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -89,11 +90,20 @@ export default function Login() {
               <label className="mb-1 block font-body text-sm text-black-deep/70">
                 Contraseña
               </label>
-              <input
-                type="password"
-                {...register("password")}
-                className="w-full rounded-lg border border-black-deep/20 bg-transparent px-4 py-3 font-body text-black-deep outline-none transition-colors focus:border-gold-accent"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  className="w-full rounded-lg border border-black-deep/20 bg-transparent px-4 py-3 pr-12 font-body text-black-deep outline-none transition-colors focus:border-gold-accent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-body text-xs text-black-deep/40 transition-colors hover:text-black-deep"
+                >
+                  {showPassword ? "Ocultar" : "Ver"}
+                </button>
+              </div>
               {errors.password && (
                 <p className="mt-1 font-body text-xs text-red-400">
                   {errors.password.message}
