@@ -76,6 +76,8 @@ export default function Register() {
             </label>
             <input
               {...register("name")}
+              maxLength={80}
+              autoComplete="name"
               className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.name && (
@@ -92,6 +94,8 @@ export default function Register() {
             <input
               type="email"
               {...register("email")}
+              maxLength={254}
+              autoComplete="email"
               className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
             />
             {errors.email && (
@@ -108,7 +112,10 @@ export default function Register() {
             <input
               type="password"
               {...register("password")}
-              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off outline-none transition-colors focus:border-gold-accent"
+              maxLength={72}
+              autoComplete="new-password"
+              placeholder="Mín. 8 caracteres, 1 letra y 1 número"
+              className="w-full rounded-lg border border-white-off/20 bg-transparent px-4 py-3 font-body text-white-off placeholder:text-white-off/30 outline-none transition-colors focus:border-gold-accent"
             />
             {errors.password && (
               <p className="mt-1 font-body text-xs text-red-400">

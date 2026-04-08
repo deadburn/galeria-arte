@@ -39,13 +39,41 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim()) return setError("El título es obligatorio.");
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) return setError("El título es obligatorio.");
+    if (trimmedTitle.length > 100)
+      return setError("El título es muy largo (máx. 100 caracteres).");
     if (!initial && !file) return setError("Debes subir una imagen.");
+    if (description.length > 500)
+      return setError("La descripción es muy larga (máx. 500 caracteres).");
+    if (technique.trim().length > 60)
+      return setError("La técnica es muy larga (máx. 60 caracteres).");
+    if (year) {
+      const y = parseInt(year, 10);
+      if (isNaN(y) || y < 1900 || y > new Date().getFullYear()) {
+        return setError(
+          `El año debe estar entre 1900 y ${new Date().getFullYear()}.`,
+        );
+      }
+    }
+    if (file) {
+      const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+      if (!ACCEPTED_TYPES.includes(file.type))
+        return setError("Formato no soportado. Usa JPEG, PNG o WebP.");
+      if (file.size > 5 * 1024 * 1024)
+        return setError("La imagen no debe superar los 5 MB.");
+    }
 
     setSubmitting(true);
     setError("");
     try {
-      await onSubmit({ title, description, technique, year, file });
+      await onSubmit({
+        title: trimmedTitle,
+        description: description.trim(),
+        technique: technique.trim(),
+        year,
+        file,
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al guardar");
     } finally {
