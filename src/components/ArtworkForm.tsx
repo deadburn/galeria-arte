@@ -82,7 +82,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
   }
 
   const inputClass =
-    "w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent";
+    "w-full rounded-lg border border-black-deep/10 bg-transparent px-4 py-3 font-body text-sm text-black-deep placeholder-black-deep/30 outline-none focus:border-gold-accent";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -94,12 +94,12 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
 
       {/* Image upload */}
       <div>
-        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-white-off/50">
+        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-black-deep/50">
           Imagen (JPEG, PNG, WebP — max 5 MB)
         </label>
         <div
           onClick={() => fileRef.current?.click()}
-          className="relative flex min-h-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-white-off/20 transition-colors hover:border-gold-accent/50"
+          className="relative flex min-h-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-black-deep/20 transition-colors hover:border-gold-accent/50"
         >
           {preview ? (
             <img
@@ -108,7 +108,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
               className="h-full max-h-[300px] w-full object-contain"
             />
           ) : (
-            <span className="font-body text-sm text-white-off/30">
+            <span className="font-body text-sm text-black-deep/30">
               Haz clic para seleccionar una imagen
             </span>
           )}
@@ -124,7 +124,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
 
       {/* Title */}
       <div>
-        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-white-off/50">
+        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-black-deep/50">
           Título *
         </label>
         <input
@@ -138,7 +138,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
 
       {/* Description */}
       <div>
-        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-white-off/50">
+        <label className="mb-2 block font-body text-xs uppercase tracking-widest text-black-deep/50">
           Descripción
         </label>
         <textarea
@@ -153,7 +153,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
       {/* Technique + Year */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-2 block font-body text-xs uppercase tracking-widest text-white-off/50">
+          <label className="mb-2 block font-body text-xs uppercase tracking-widest text-black-deep/50">
             Técnica
           </label>
           <input
@@ -165,7 +165,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
           />
         </div>
         <div>
-          <label className="mb-2 block font-body text-xs uppercase tracking-widest text-white-off/50">
+          <label className="mb-2 block font-body text-xs uppercase tracking-widest text-black-deep/50">
             Año
           </label>
           <input
@@ -190,7 +190,7 @@ export default function ArtworkForm({ initial, onSubmit, onCancel }: Props) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-6 py-3 font-body text-sm uppercase tracking-widest text-white-off/50 transition-colors hover:text-white-off"
+          className="px-6 py-3 font-body text-sm uppercase tracking-widest text-black-deep/50 transition-colors hover:text-black-deep"
         >
           Cancelar
         </button>

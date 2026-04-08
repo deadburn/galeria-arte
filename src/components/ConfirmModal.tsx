@@ -26,9 +26,9 @@ export default function ConfirmModal({
       />
 
       {/* Modal */}
-      <div className="animate-fade-in-scale relative mx-4 w-full max-w-md rounded-2xl border border-white-off/10 bg-black-deep p-8">
-        <h2 className="font-heading text-xl text-white-off">{title}</h2>
-        <p className="mt-3 font-body text-sm leading-relaxed text-white-off/60">
+      <div className="animate-fade-in-scale relative mx-4 w-full max-w-md rounded-2xl border border-black-deep/8 bg-white p-8 shadow-2xl shadow-black/15">
+        <h2 className="font-heading text-xl text-black-deep">{title}</h2>
+        <p className="mt-3 font-body text-sm leading-relaxed text-black-deep/60">
           {message}
         </p>
 
@@ -36,7 +36,7 @@ export default function ConfirmModal({
           <button
             onClick={onCancel}
             disabled={loading}
-            className="px-5 py-2.5 font-body text-sm uppercase tracking-widest text-white-off/50 transition-colors hover:text-white-off disabled:opacity-50"
+            className="px-5 py-2.5 font-body text-sm uppercase tracking-widest text-black-deep/50 transition-colors hover:text-black-deep disabled:opacity-50"
           >
             {cancelLabel}
           </button>

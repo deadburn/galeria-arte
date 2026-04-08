@@ -45,12 +45,12 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="animate-fade-in-up min-h-screen bg-black-deep px-4 py-12">
+    <div className="animate-fade-in-up min-h-screen bg-white-off px-4 py-12">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-2 font-heading text-3xl text-white-off sm:text-4xl">
+        <h1 className="mb-2 font-heading text-3xl text-black-deep sm:text-4xl">
           Panel de Administración
         </h1>
-        <p className="mb-10 font-body text-sm text-white-off/50">
+        <p className="mb-10 font-body text-sm text-black-deep/50">
           Artistas pendientes de aprobación
         </p>
 
@@ -61,9 +61,9 @@ export default function AdminDashboard() {
         )}
 
         {loading ? (
-          <p className="font-body text-white-off/50">Cargando...</p>
+          <p className="font-body text-black-deep/50">Cargando...</p>
         ) : artists.length === 0 ? (
-          <p className="font-body text-white-off/50">
+          <p className="font-body text-black-deep/50">
             No hay artistas pendientes de aprobación.
           </p>
         ) : (
@@ -71,19 +71,19 @@ export default function AdminDashboard() {
             {artists.map((artist) => (
               <div
                 key={artist.id}
-                className="rounded-xl border border-white-off/10 p-6 transition-colors hover:border-white-off/20"
+                className="rounded-xl border border-black-deep/10 p-6 transition-colors hover:border-black-deep/20"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0 flex-1">
-                    <h2 className="font-heading text-2xl text-white-off">
+                    <h2 className="font-heading text-2xl text-black-deep">
                       {artist.name}
                     </h2>
-                    <p className="mt-1 font-body text-sm text-white-off/50">
+                    <p className="mt-1 font-body text-sm text-black-deep/50">
                       {artist.email}
                     </p>
 
                     {artist.bio && (
-                      <p className="mt-3 font-body text-sm text-white-off/70">
+                      <p className="mt-3 font-body text-sm text-black-deep/70">
                         {artist.bio}
                       </p>
                     )}
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
                       </a>
                     )}
 
-                    <p className="mt-2 font-body text-xs text-white-off/30">
+                    <p className="mt-2 font-body text-xs text-black-deep/30">
                       Registrado:{" "}
                       {new Date(artist.created_at).toLocaleDateString("es-ES", {
                         day: "numeric",

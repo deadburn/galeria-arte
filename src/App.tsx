@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Gallery from "./pages/Gallery";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ArtistDashboard from "./pages/artist/Dashboard";
@@ -27,6 +28,7 @@ function App() {
           </Route>
         </Routes>
       </PageTransition>
+      <Footer />
     </BrowserRouter>
   );
 }

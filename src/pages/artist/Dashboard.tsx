@@ -138,22 +138,22 @@ export default function ArtistDashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black-deep">
-        <p className="font-body text-white-off/50">Cargando...</p>
+      <div className="flex min-h-screen items-center justify-center bg-white-off">
+        <p className="font-body text-black-deep/50">Cargando...</p>
       </div>
     );
   }
 
   return (
-    <div className="animate-fade-in-up min-h-screen bg-black-deep px-4 py-8 sm:px-6 sm:py-12">
+    <div className="animate-fade-in-up min-h-screen bg-white-off px-4 py-8 sm:px-6 sm:py-12">
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="font-heading text-3xl text-white-off sm:text-4xl">
+            <h1 className="font-heading text-3xl text-black-deep sm:text-4xl">
               Mis Obras
             </h1>
-            <p className="mt-1 font-body text-sm text-white-off/50">
+            <p className="mt-1 font-body text-sm text-black-deep/50">
               {profile?.name} — {artworks.length}{" "}
               {artworks.length === 1 ? "obra" : "obras"}
             </p>
@@ -161,7 +161,7 @@ export default function ArtistDashboard() {
           <div className="flex gap-3">
             <button
               onClick={openProfileEdit}
-              className="rounded-lg border border-white-off/20 px-4 py-2 font-body text-xs uppercase tracking-widest text-white-off/50 transition-colors hover:border-white-off/40 hover:text-white-off sm:px-5 sm:py-3 sm:text-sm"
+              className="rounded-lg border border-black-deep/20 px-4 py-2 font-body text-xs uppercase tracking-widest text-black-deep/50 transition-colors hover:border-black-deep/40 hover:text-black-deep sm:px-5 sm:py-3 sm:text-sm"
             >
               Mi Perfil
             </button>
@@ -184,8 +184,8 @@ export default function ArtistDashboard() {
 
         {/* Create / Edit form */}
         {(view === "create" || view === "edit") && (
-          <div className="mb-12 rounded-xl border border-white-off/10 p-4 sm:p-6 md:p-8">
-            <h2 className="mb-6 font-heading text-2xl text-white-off">
+          <div className="mb-12 rounded-xl border border-black-deep/10 p-4 sm:p-6 md:p-8">
+            <h2 className="mb-6 font-heading text-2xl text-black-deep">
               {view === "create" ? "Nueva Obra" : `Editar: ${editing?.title}`}
             </h2>
             <ArtworkForm
@@ -202,10 +202,10 @@ export default function ArtistDashboard() {
         {/* Artwork list */}
         {view === "list" && artworks.length === 0 && (
           <div className="mt-20 text-center">
-            <p className="font-heading text-2xl text-white-off/30">
+            <p className="font-heading text-2xl text-black-deep/30">
               Aún no tienes obras
             </p>
-            <p className="mt-2 font-body text-sm text-white-off/20">
+            <p className="mt-2 font-body text-sm text-black-deep/20">
               Haz clic en "+ Nueva Obra" para comenzar
             </p>
           </div>
@@ -216,10 +216,10 @@ export default function ArtistDashboard() {
             {artworks.map((artwork) => (
               <div
                 key={artwork.id}
-                className="group overflow-hidden rounded-xl border border-white-off/10 transition-colors hover:border-white-off/20"
+                className="group overflow-hidden rounded-xl border border-black-deep/10 transition-colors hover:border-black-deep/20"
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden bg-white-off/5">
+                <div className="relative aspect-[4/3] overflow-hidden bg-black-deep/5">
                   {artwork.image_url ? (
                     <img
                       src={artwork.image_url}
@@ -228,7 +228,7 @@ export default function ArtistDashboard() {
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center">
-                      <span className="font-body text-xs text-white-off/20">
+                      <span className="font-body text-xs text-black-deep/20">
                         Sin imagen
                       </span>
                     </div>
@@ -237,7 +237,7 @@ export default function ArtistDashboard() {
 
                 {/* Info */}
                 <div className="p-4">
-                  <h3 className="font-heading text-lg text-white-off">
+                  <h3 className="font-heading text-lg text-black-deep">
                     {artwork.title}
                   </h3>
                   {artwork.technique && (
@@ -247,23 +247,23 @@ export default function ArtistDashboard() {
                     </p>
                   )}
                   {artwork.description && (
-                    <p className="mt-2 line-clamp-2 font-body text-xs text-white-off/50">
+                    <p className="mt-2 line-clamp-2 font-body text-xs text-black-deep/50">
                       {artwork.description}
                     </p>
                   )}
 
                   {/* Actions */}
-                  <div className="mt-4 flex gap-3 border-t border-white-off/5 pt-4">
+                  <div className="mt-4 flex gap-3 border-t border-black-deep/5 pt-4">
                     <button
                       onClick={() => openEdit(artwork)}
-                      className="font-body text-xs uppercase tracking-widest text-white-off/40 transition-colors hover:text-gold-accent"
+                      className="font-body text-xs uppercase tracking-widest text-black-deep/40 transition-colors hover:text-gold-accent"
                     >
                       Editar
                     </button>
                     <button
                       onClick={() => setConfirmDelete(artwork)}
                       disabled={deletingId === artwork.id}
-                      className="font-body text-xs uppercase tracking-widest text-white-off/40 transition-colors hover:text-red-400 disabled:opacity-50"
+                      className="font-body text-xs uppercase tracking-widest text-black-deep/40 transition-colors hover:text-red-400 disabled:opacity-50"
                     >
                       {deletingId === artwork.id ? "Eliminando..." : "Eliminar"}
                     </button>
@@ -293,13 +293,13 @@ export default function ArtistDashboard() {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setEditingProfile(false)}
           />
-          <div className="relative mx-4 w-full max-w-lg rounded-2xl border border-white-off/10 bg-black-deep p-6 sm:p-8">
-            <h2 className="mb-6 font-heading text-2xl text-white-off">
+          <div className="relative mx-4 w-full max-w-lg rounded-2xl border border-black-deep/8 bg-white p-6 shadow-2xl shadow-black/15 sm:p-8">
+            <h2 className="mb-6 font-heading text-2xl text-black-deep">
               Editar Perfil
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-black-deep/50">
                   Nombre
                 </label>
                 <input
@@ -308,11 +308,11 @@ export default function ArtistDashboard() {
                   onChange={(e) =>
                     setProfileForm({ ...profileForm, name: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off outline-none focus:border-gold-accent"
+                  className="w-full rounded-lg border border-black-deep/10 bg-transparent px-4 py-3 font-body text-sm text-black-deep outline-none focus:border-gold-accent"
                 />
               </div>
               <div>
-                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-black-deep/50">
                   Bio
                 </label>
                 <textarea
@@ -322,11 +322,11 @@ export default function ArtistDashboard() {
                   }
                   rows={3}
                   placeholder="Cuéntanos sobre ti..."
-                  className="w-full resize-none rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                  className="w-full resize-none rounded-lg border border-black-deep/10 bg-transparent px-4 py-3 font-body text-sm text-black-deep placeholder-black-deep/30 outline-none focus:border-gold-accent"
                 />
               </div>
               <div>
-                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-black-deep/50">
                   Técnica
                 </label>
                 <input
@@ -339,11 +339,11 @@ export default function ArtistDashboard() {
                     })
                   }
                   placeholder="Óleo, acuarela..."
-                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                  className="w-full rounded-lg border border-black-deep/10 bg-transparent px-4 py-3 font-body text-sm text-black-deep placeholder-black-deep/30 outline-none focus:border-gold-accent"
                 />
               </div>
               <div>
-                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-white-off/50">
+                <label className="mb-1 block font-body text-xs uppercase tracking-widest text-black-deep/50">
                   Instagram
                 </label>
                 <input
@@ -356,14 +356,14 @@ export default function ArtistDashboard() {
                     })
                   }
                   placeholder="https://instagram.com/tu_usuario"
-                  className="w-full rounded-lg border border-white-off/10 bg-transparent px-4 py-3 font-body text-sm text-white-off placeholder-white-off/30 outline-none focus:border-gold-accent"
+                  className="w-full rounded-lg border border-black-deep/10 bg-transparent px-4 py-3 font-body text-sm text-black-deep placeholder-black-deep/30 outline-none focus:border-gold-accent"
                 />
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-4">
               <button
                 onClick={() => setEditingProfile(false)}
-                className="px-5 py-2.5 font-body text-sm uppercase tracking-widest text-white-off/50 transition-colors hover:text-white-off"
+                className="px-5 py-2.5 font-body text-sm uppercase tracking-widest text-black-deep/50 transition-colors hover:text-black-deep"
               >
                 Cancelar
               </button>

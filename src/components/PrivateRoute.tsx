@@ -24,8 +24,8 @@ export default function PrivateRoute({
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black-deep">
-        <p className="font-body text-white-off/50">Cargando...</p>
+      <div className="flex min-h-screen items-center justify-center bg-white-off">
+        <p className="font-body text-black-deep/50">Cargando...</p>
       </div>
     );
   }

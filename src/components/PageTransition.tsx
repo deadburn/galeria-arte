@@ -21,7 +21,7 @@ export default function PageTransition({
 
   return (
     <div
-      className={`min-h-screen bg-black-deep transition-opacity duration-200 ease-out ${
+      className={`min-h-screen bg-white-off transition-opacity duration-200 ease-out ${
         transitioning ? "opacity-0" : "opacity-100"
       }`}
     >

@@ -19,11 +19,11 @@ export default function ArtistModal({ group, onClose }: Props) {
       />
 
       {/* Modal content */}
-      <div className="animate-fade-in-scale relative z-10 mx-3 my-6 w-full max-w-4xl overflow-hidden rounded-2xl border border-white-off/10 bg-black-deep sm:mx-4 sm:my-12">
+      <div className="animate-fade-in-scale relative z-10 mx-3 my-6 w-full max-w-4xl overflow-hidden rounded-2xl border border-black-deep/8 bg-white shadow-2xl shadow-black/15 sm:mx-4 sm:my-12">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-lg text-white-off/70 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white-off"
+          className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-lg text-white/80 backdrop-blur-sm transition-colors hover:bg-black/60 hover:text-white"
           aria-label="Cerrar"
         >
           ✕
@@ -39,7 +39,7 @@ export default function ArtistModal({ group, onClose }: Props) {
                 alt=""
                 className="h-full w-full object-cover blur-2xl brightness-[0.25] saturate-150"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black-deep/30 via-transparent to-black-deep" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
             </div>
           )}
 
@@ -57,7 +57,7 @@ export default function ArtistModal({ group, onClose }: Props) {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl tracking-wide text-white-off sm:text-4xl">
+            <h2 className="font-heading text-3xl tracking-wide text-white sm:text-4xl">
               {group.name}
             </h2>
 
@@ -68,7 +68,7 @@ export default function ArtistModal({ group, onClose }: Props) {
             )}
 
             {group.bio && (
-              <p className="mx-auto mt-4 max-w-lg font-body text-sm leading-relaxed text-white-off/65 italic">
+              <p className="mx-auto mt-4 max-w-lg font-body text-sm leading-relaxed text-white/65 italic">
                 "{group.bio}"
               </p>
             )}
@@ -79,7 +79,7 @@ export default function ArtistModal({ group, onClose }: Props) {
                   href={group.portfolio_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 rounded-full border border-white-off/10 bg-white-off/5 px-4 py-1.5 font-body text-xs text-white-off/70 transition-colors hover:border-gold-accent/30 hover:text-gold-accent"
+                  className="flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 font-body text-xs text-white/80 transition-colors hover:border-gold-accent/30 hover:text-gold-accent"
                 >
                   <svg
                     className="h-3.5 w-3.5"
@@ -91,7 +91,7 @@ export default function ArtistModal({ group, onClose }: Props) {
                   Instagram
                 </a>
               )}
-              <span className="font-body text-xs text-white-off/30">
+              <span className="font-body text-xs text-white/40">
                 {group.count} {group.count === 1 ? "obra" : "obras"}
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function ArtistModal({ group, onClose }: Props) {
         </div>
 
         {/* Divider */}
-        <div className="mx-6 h-px bg-gradient-to-r from-transparent via-white-off/10 to-transparent sm:mx-10" />
+        <div className="mx-6 h-px bg-gradient-to-r from-transparent via-black-deep/10 to-transparent sm:mx-10" />
 
         {/* Artworks grid */}
         <div className="stagger-children grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 sm:gap-4 sm:p-6 lg:grid-cols-3">
@@ -107,9 +107,9 @@ export default function ArtistModal({ group, onClose }: Props) {
             <div
               key={artwork.id}
               onClick={() => setSelected(artwork)}
-              className="group cursor-pointer overflow-hidden rounded-xl border border-white-off/5 bg-white-off/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:border-white-off/15 hover:bg-white-off/[0.04]"
+              className="group cursor-pointer overflow-hidden rounded-xl border border-black-deep/5 bg-black-deep/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:border-black-deep/10 hover:bg-black-deep/[0.03]"
             >
-              <div className="aspect-[4/5] overflow-hidden bg-white-off/5">
+              <div className="aspect-[4/5] overflow-hidden bg-black-deep/5">
                 {artwork.image_url ? (
                   <img
                     src={artwork.image_url}
@@ -118,17 +118,17 @@ export default function ArtistModal({ group, onClose }: Props) {
                   />
                 ) : (
                   <div className="flex h-full items-center justify-center">
-                    <span className="font-body text-xs text-white-off/20">
+                    <span className="font-body text-xs text-black-deep/25">
                       Sin imagen
                     </span>
                   </div>
                 )}
               </div>
               <div className="px-4 py-3">
-                <h3 className="font-heading text-base text-white-off">
+                <h3 className="font-heading text-base text-black-deep">
                   {artwork.title}
                 </h3>
-                <p className="mt-0.5 font-body text-[11px] text-white-off/35">
+                <p className="mt-0.5 font-body text-[11px] text-black-deep/40">
                   {artwork.technique && artwork.technique}
                   {artwork.technique && artwork.year && " · "}
                   {artwork.year && artwork.year}

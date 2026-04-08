@@ -1,38 +1,112 @@
 import { z } from "zod";
 
-// Dominios desechables / temporales más comunes
-const DISPOSABLE_DOMAINS = [
-  "mailinator.com",
-  "guerrillamail.com",
-  "tempmail.com",
-  "throwaway.email",
-  "yopmail.com",
-  "sharklasers.com",
-  "guerrillamailblock.com",
-  "grr.la",
-  "dispostable.com",
-  "trashmail.com",
-  "temp-mail.org",
-  "fakeinbox.com",
-  "maildrop.cc",
-  "10minutemail.com",
-  "minuteinbox.com",
-  "emailondeck.com",
-  "tempr.email",
-  "discard.email",
-  "mailnesia.com",
-  "getnada.com",
+// Proveedores de email permitidos (reales y conocidos)
+const ALLOWED_DOMAINS = [
+  // Google
+  "gmail.com",
+  "googlemail.com",
+  // Microsoft
+  "hotmail.com",
+  "outlook.com",
+  "outlook.es",
+  "live.com",
+  "msn.com",
+  "hotmail.es",
+  "hotmail.co",
+  // Yahoo
+  "yahoo.com",
+  "yahoo.es",
+  "yahoo.com.mx",
+  "yahoo.com.ar",
+  "yahoo.com.co",
+  "ymail.com",
+  // Apple
+  "icloud.com",
+  "me.com",
+  "mac.com",
+  // Otros proveedores reales
+  "protonmail.com",
+  "proton.me",
+  "zoho.com",
+  "aol.com",
+  // Latinoamérica comunes
+  "cantv.net",
+  "movistar.com.ve",
+  "inter.net.ve",
 ];
 
-const nameValidation = z
-  .string()
-  .trim()
-  .min(2, "El nombre debe tener al menos 2 caracteres")
-  .max(80, "El nombre es muy largo")
-  .regex(
-    /^[a-záàäâãéèëêíìïîóòöôõúùüûñçA-ZÁÀÄÂÃÉÈËÊÍÌÏÎÓÒÖÔÕÚÙÜÛÑÇ\s'-]+$/,
-    "El nombre solo puede contener letras, espacios, apóstrofes y guiones",
-  );
+// Dominios reales → typos comunes que la gente escribe
+const DOMAIN_TYPO_MAP: Record<string, string[]> = {
+  "gmail.com": [
+    "gmial.com",
+    "gmai.com",
+    "gmil.com",
+    "gmal.com",
+    "gamil.com",
+    "gnail.com",
+    "gmail.co",
+    "gmail.cm",
+    "gmail.om",
+    "gmaill.com",
+    "gmeil.com",
+    "gmaul.com",
+    "gmsil.com",
+    "gimail.com",
+    "gmail.con",
+    "gmail.cim",
+    "gmail.vom",
+    "gemail.com",
+    "hmail.com",
+    "gmill.com",
+  ],
+  "hotmail.com": [
+    "hotmal.com",
+    "hotmial.com",
+    "hotmai.com",
+    "hotmil.com",
+    "hotmeil.com",
+    "hotmail.con",
+    "hotmaill.com",
+    "hotamil.com",
+    "homail.com",
+    "htmail.com",
+    "hotmail.cm",
+    "hotmsil.com",
+  ],
+  "outlook.com": [
+    "outook.com",
+    "outlok.com",
+    "outllook.com",
+    "outlool.com",
+    "outlook.con",
+    "outloock.com",
+    "oulook.com",
+  ],
+  "yahoo.com": [
+    "yaho.com",
+    "yahooo.com",
+    "yhaoo.com",
+    "yaoo.com",
+    "yahoo.con",
+    "yahoo.cm",
+    "yahho.com",
+    "yaooh.com",
+  ],
+  "icloud.com": ["iclod.com", "icoud.com", "icloud.con", "icloude.com"],
+};
+
+/** Devuelve el dominio correcto sugerido, o null si no hay typo detectado */
+export function detectEmailTypo(email: string): string | null {
+  const domain = email.split("@")[1]?.toLowerCase();
+  if (!domain) return null;
+
+  for (const [correct, typos] of Object.entries(DOMAIN_TYPO_MAP)) {
+    if (typos.includes(domain)) {
+      return email.split("@")[0] + "@" + correct;
+    }
+  }
+  return null;
+}
 
 const emailValidation = z
   .string()
@@ -43,16 +117,30 @@ const emailValidation = z
   .refine(
     (email) => {
       const domain = email.split("@")[1];
-      return !DISPOSABLE_DOMAINS.includes(domain);
+      return ALLOWED_DOMAINS.includes(domain);
     },
-    { message: "No se permiten correos temporales o desechables" },
+    {
+      message:
+        "Usa un correo de un proveedor conocido (Gmail, Hotmail, Outlook, Yahoo, iCloud, etc.)",
+    },
   )
   .refine(
     (email) => {
-      const domain = email.split("@")[1];
-      return domain?.includes(".");
+      return detectEmailTypo(email) === null;
     },
-    { message: "El dominio del email no es válido" },
+    {
+      message: "El dominio del email parece tener un error de escritura",
+    },
+  );
+
+const nameValidation = z
+  .string()
+  .trim()
+  .min(2, "El nombre debe tener al menos 2 caracteres")
+  .max(80, "El nombre es muy largo")
+  .regex(
+    /^[a-záàäâãéèëêíìïîóòöôõúùüûñçA-ZÁÀÄÂÃÉÈËÊÍÌÏÎÓÒÖÔÕÚÙÜÛÑÇ\s'-]+$/,
+    "El nombre solo puede contener letras, espacios, apóstrofes y guiones",
   );
 
 const passwordValidation = z

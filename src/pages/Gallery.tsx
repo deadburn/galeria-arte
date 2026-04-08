@@ -16,18 +16,18 @@ export default function Gallery() {
   }, []);
 
   return (
-    <div className="animate-fade-in-up min-h-screen bg-black-deep px-4 py-8 sm:px-6 sm:py-12">
+    <div className="animate-fade-in-up min-h-screen bg-white-off px-4 py-8 sm:px-6 sm:py-12">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 text-center font-heading text-3xl text-white-off sm:mb-12 sm:text-5xl">
-          Lo último en nuestra galería
+        <h1 className="mb-8 text-center font-heading text-3xl text-black-deep sm:mb-12 sm:text-5xl">
+          Conoce nuestros artistas
         </h1>
 
         {loading ? (
-          <p className="text-center font-body text-white-off/50">
+          <p className="text-center font-body text-black-deep/50">
             Cargando obras...
           </p>
         ) : groups.length === 0 ? (
-          <p className="text-center font-body text-white-off/50">
+          <p className="text-center font-body text-black-deep/50">
             Aún no hay obras publicadas.
           </p>
         ) : (
