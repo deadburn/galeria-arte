@@ -36,7 +36,15 @@ export function groupByArtist(artworks: Artwork[]): ArtistGroup[] {
     }
   }
 
-  return Array.from(map.values());
+  const groups = Array.from(map.values());
+
+  // Fisher-Yates shuffle para orden aleatorio en cada visita
+  for (let i = groups.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [groups[i], groups[j]] = [groups[j], groups[i]];
+  }
+
+  return groups;
 }
 
 export async function getMyArtworks(artistId: string): Promise<Artwork[]> {

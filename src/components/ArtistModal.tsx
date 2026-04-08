@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ArtistGroup, Artwork } from "../lib/types";
 
 interface Props {
@@ -9,6 +9,13 @@ interface Props {
 export default function ArtistModal({ group, onClose }: Props) {
   const [selected, setSelected] = useState<Artwork | null>(null);
   const heroImage = group.latestArtwork.image_url;
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto">
