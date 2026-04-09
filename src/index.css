@@ -88,5 +88,5 @@ body {
 img[draggable="false"] {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  pointer-events: none;
+  user-select: none;
 }
