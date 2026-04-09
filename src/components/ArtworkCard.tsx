@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { ArtistGroup } from "../lib/types";
 
 interface Props {
@@ -7,19 +8,30 @@ interface Props {
 
 export default function ArtworkCard({ group, onClick }: Props) {
   const artwork = group.latestArtwork;
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div
       onClick={onClick}
       className="group cursor-pointer overflow-hidden rounded-xl border border-black-deep/10 transition-all duration-300 hover:border-black-deep/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/30"
     >
-      <div className="aspect-square overflow-hidden">
+      <div className="aspect-square overflow-hidden bg-black-deep/5">
         {artwork.image_url ? (
-          <img
-            src={artwork.image_url}
-            alt={artwork.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+          <>
+            {!loaded && (
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-black-deep/5 via-black-deep/10 to-black-deep/5" />
+            )}
+            <img
+              src={artwork.image_url}
+              alt={artwork.title}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              onLoad={() => setLoaded(true)}
+              className={`h-full w-full select-none object-cover transition-all duration-500 group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
+            />
+          </>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-black-deep/5">
             <span className="font-body text-sm text-black-deep/20">

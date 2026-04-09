@@ -41,9 +41,14 @@ export default function Register() {
       });
       setSubmitted(true);
     } catch (err) {
-      setServerError(
-        err instanceof Error ? err.message : "Error al registrarse",
-      );
+      const msg = err instanceof Error ? err.message : "Error al registrarse";
+      if (msg === "Failed to fetch" || msg.includes("fetch")) {
+        setServerError(
+          "Error de conexión. Tu red WiFi podría estar bloqueando el acceso. Intenta con datos móviles o cambia el DNS de tu WiFi a 8.8.8.8",
+        );
+      } else {
+        setServerError(msg);
+      }
     }
   }
 

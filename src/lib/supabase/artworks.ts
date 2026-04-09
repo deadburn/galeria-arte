@@ -7,11 +7,13 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 export async function getApprovedArtworks(): Promise<Artwork[]> {
   const { data, error } = await supabase
     .from("artworks")
-    .select("*, profiles(name, bio, technique, portfolio_url)")
+    .select(
+      "id, artist_id, title, description, technique, year, image_url, created_at, updated_at, profiles(name, bio, technique, portfolio_url)",
+    )
     .order("created_at", { ascending: false });
 
   if (error) throw error;
-  return (data ?? []) as Artwork[];
+  return (data ?? []) as unknown as Artwork[];
 }
 
 export function groupByArtist(artworks: Artwork[]): ArtistGroup[] {
@@ -58,6 +60,55 @@ export async function getMyArtworks(artistId: string): Promise<Artwork[]> {
   return (data ?? []) as Artwork[];
 }
 
+const MAX_DIMENSION = 1600;
+const COMPRESSION_QUALITY = 0.82;
+
+function compressImage(file: File): Promise<File> {
+  return new Promise((resolve, reject) => {
+    // If already small enough, skip compression
+    if (file.size < 200_000) return resolve(file);
+
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+
+      // Scale down if larger than MAX_DIMENSION
+      if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+        const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return resolve(file);
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob || blob.size >= file.size) return resolve(file);
+          resolve(
+            new File([blob], file.name.replace(/\.\w+$/, ".webp"), {
+              type: "image/webp",
+            }),
+          );
+        },
+        "image/webp",
+        COMPRESSION_QUALITY,
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Error al procesar la imagen"));
+    };
+    img.src = url;
+  });
+}
+
 export async function uploadArtworkImage(
   file: File,
   artistId: string,
@@ -69,12 +120,13 @@ export async function uploadArtworkImage(
     throw new Error("La imagen no debe superar los 5 MB.");
   }
 
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+  const compressed = await compressImage(file);
+  const ext = compressed.name.split(".").pop()?.toLowerCase() ?? "webp";
   const path = `${artistId}/${crypto.randomUUID()}.${ext}`;
 
   const { error } = await supabase.storage
     .from("artworks")
-    .upload(path, file, { contentType: file.type, upsert: false });
+    .upload(path, compressed, { contentType: compressed.type, upsert: false });
 
   if (error) throw error;
 

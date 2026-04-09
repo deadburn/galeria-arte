@@ -83,3 +83,10 @@
 body {
   background-color: #f5f0eb;
 }
+
+/* Prevent image save on long-press (mobile) */
+img[draggable="false"] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
