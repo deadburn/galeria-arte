@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+/** Remueve caracteres peligrosos que podrían usarse para XSS */
+function sanitize(val: string): string {
+  return val
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 // Proveedores de email permitidos (reales y conocidos)
 const ALLOWED_DOMAINS = [
   // Google
@@ -141,20 +150,26 @@ const nameValidation = z
   .regex(
     /^[a-záàäâãéèëêíìïîóòöôõúùüûñçA-ZÁÀÄÂÃÉÈËÊÍÌÏÎÓÒÖÔÕÚÙÜÛÑÇ\s'-]+$/,
     "El nombre solo puede contener letras, espacios, apóstrofes y guiones",
-  );
+  )
+  .transform(sanitize);
 
 const passwordValidation = z
   .string()
   .min(8, "La contraseña debe tener al menos 8 caracteres")
   .max(72, "La contraseña es muy larga")
   .regex(/[a-záéíóúñ]/i, "Debe contener al menos una letra")
-  .regex(/[0-9]/, "Debe contener al menos un número");
+  .regex(/[0-9]/, "Debe contener al menos un número")
+  .regex(
+    /[^a-zA-Z0-9]/,
+    "Debe contener al menos un carácter especial (!@#$%...)",
+  );
 
 const techniqueValidation = z
   .string()
   .trim()
   .min(2, "Indica tu técnica artística")
-  .max(60, "La técnica es muy larga");
+  .max(60, "La técnica es muy larga")
+  .transform(sanitize);
 
 const instagramValidation = z
   .string()
@@ -189,3 +204,18 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+// Validación para obras de arte (usado en ArtworkForm y backend)
+export const artworkTitleSchema = z
+  .string()
+  .trim()
+  .min(1, "El título es obligatorio")
+  .max(100, "El título es muy largo")
+  .transform(sanitize);
+
+export const artworkDescriptionSchema = z
+  .string()
+  .trim()
+  .max(500, "La descripción es muy larga")
+  .transform(sanitize)
+  .optional();

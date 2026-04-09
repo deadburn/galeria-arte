@@ -9,11 +9,27 @@ interface RequestBody {
   artistName: string;
 }
 
+/** Escapa HTML para prevenir XSS en emails */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
+/** Valida formato de email básico */
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
+}
+
 function buildApprovedHtml(name: string): string {
+  const safeName = escapeHtml(name);
   return `
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0A0A0A; padding: 40px; color: #F5F0EB;">
       <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; color: #C9A84C; margin-bottom: 16px;">
-        ¡Bienvenido, ${name}!
+        ¡Bienvenido, ${safeName}!
       </h1>
       <p style="font-size: 15px; line-height: 1.6; color: #F5F0EB;">
         Tu solicitud ha sido <strong style="color: #C9A84C;">aprobada</strong>. Ya puedes acceder a tu panel de artista para subir y gestionar tus obras.
@@ -27,10 +43,11 @@ function buildApprovedHtml(name: string): string {
 }
 
 function buildRejectedHtml(name: string): string {
+  const safeName = escapeHtml(name);
   return `
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0A0A0A; padding: 40px; color: #F5F0EB;">
       <h1 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; color: #F5F0EB; margin-bottom: 16px;">
-        Hola, ${name}
+        Hola, ${safeName}
       </h1>
       <p style="font-size: 15px; line-height: 1.6; color: #F5F0EB;">
         Lamentamos informarte que tu solicitud no ha sido aprobada en esta ocasión. Si crees que se trata de un error, puedes contactarnos para más información.
@@ -57,6 +74,29 @@ Deno.serve(async (req) => {
         }),
         { status: 400, headers: { "Content-Type": "application/json" } },
       );
+    }
+
+    if (!isValidEmail(email)) {
+      return new Response(JSON.stringify({ error: "Invalid email format" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (type !== "approved" && type !== "rejected") {
+      return new Response(
+        JSON.stringify({
+          error: "Invalid type. Must be 'approved' or 'rejected'",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    if (artistName.length > 80) {
+      return new Response(JSON.stringify({ error: "Artist name too long" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const subject =

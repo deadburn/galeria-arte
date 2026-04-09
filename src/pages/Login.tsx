@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,9 +7,14 @@ import type { LoginFormData } from "../lib/schemas";
 import { signIn } from "../lib/supabase/auth";
 import { getCurrentProfile } from "../lib/supabase/auth";
 
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 60_000; // 1 minuto
+
 export default function Login() {
   const [serverError, setServerError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const attemptsRef = useRef(0);
   const navigate = useNavigate();
 
   const {
@@ -22,8 +27,17 @@ export default function Login() {
 
   async function onSubmit(data: LoginFormData) {
     setServerError("");
+
+    if (locked) {
+      setServerError(
+        "Demasiados intentos. Espera 1 minuto antes de intentar de nuevo.",
+      );
+      return;
+    }
+
     try {
       await signIn(data.email, data.password);
+      attemptsRef.current = 0;
 
       const profile = await getCurrentProfile();
 
@@ -48,6 +62,16 @@ export default function Login() {
         navigate("/dashboard");
       }
     } catch (err) {
+      attemptsRef.current++;
+      if (attemptsRef.current >= MAX_ATTEMPTS) {
+        setLocked(true);
+        setTimeout(() => {
+          setLocked(false);
+          attemptsRef.current = 0;
+        }, LOCKOUT_MS);
+        setServerError("Demasiados intentos fallidos. Espera 1 minuto.");
+        return;
+      }
       const msg =
         err instanceof Error ? err.message : "Error al iniciar sesión";
       if (msg === "Failed to fetch" || msg.includes("fetch")) {
