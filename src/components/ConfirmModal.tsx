@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 interface Props {
   title: string;
   message: string;
@@ -17,7 +19,7 @@ export default function ConfirmModal({
   onCancel,
   loading = false,
 }: Props) {
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
@@ -49,6 +51,7 @@ export default function ConfirmModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
