@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { getCurrentProfile, updateProfile } from "../../lib/supabase/auth";
+import {
+  getCurrentProfile,
+  updateProfile,
+  uploadAvatar,
+} from "../../lib/supabase/auth";
 import {
   getMyArtworks,
   createArtwork,
@@ -31,6 +35,8 @@ export default function ArtistDashboard() {
     technique: "",
     portfolio_url: "",
   });
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
 
   useEffect(() => {
@@ -114,6 +120,8 @@ export default function ArtistDashboard() {
       technique: profile.technique ?? "",
       portfolio_url: profile.portfolio_url ?? "",
     });
+    setAvatarFile(null);
+    setAvatarPreview(profile.avatar_url ?? null);
     setEditingProfile(true);
   }
 
@@ -122,11 +130,16 @@ export default function ArtistDashboard() {
     setSavingProfile(true);
     setError("");
     try {
+      let avatar_url = profile.avatar_url;
+      if (avatarFile) {
+        avatar_url = await uploadAvatar(avatarFile, profile.id);
+      }
       const updated = await updateProfile(profile.id, {
         name: profileForm.name,
         bio: profileForm.bio || null,
         technique: profileForm.technique || null,
         portfolio_url: profileForm.portfolio_url || null,
+        avatar_url,
       });
       setProfile(updated);
       setEditingProfile(false);
@@ -299,6 +312,49 @@ export default function ArtistDashboard() {
               <h2 className="mb-6 font-heading text-2xl text-black-deep">
                 Editar Perfil
               </h2>
+
+              {/* Avatar picker */}
+              <div className="mb-5 flex flex-col items-center gap-3">
+                <div className="relative">
+                  {avatarPreview ? (
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar"
+                      className="h-20 w-20 rounded-full object-cover border-2 border-gold-accent/30"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-dashed border-black-deep/20 bg-black-deep/5">
+                      <span className="font-heading text-2xl text-black-deep/30">
+                        {profileForm.name
+                          .split(" ")
+                          .map((w) => w[0])
+                          .join("")
+                          .slice(0, 2)
+                          .toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <label className="cursor-pointer rounded-lg border border-black-deep/15 px-3 py-1.5 font-body text-xs text-black-deep/50 transition-colors hover:border-gold-accent/40 hover:text-gold-accent">
+                  {avatarPreview ? "Cambiar foto" : "Subir foto"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      if (f.size > 2 * 1024 * 1024) {
+                        setError("La foto no debe superar los 2 MB.");
+                        return;
+                      }
+                      setAvatarFile(f);
+                      setAvatarPreview(URL.createObjectURL(f));
+                    }}
+                  />
+                </label>
+              </div>
+
               <div className="space-y-4">
                 <div>
                   <label className="mb-1 block font-body text-xs uppercase tracking-widest text-black-deep/50">

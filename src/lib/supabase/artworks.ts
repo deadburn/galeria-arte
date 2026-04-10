@@ -8,7 +8,7 @@ export async function getApprovedArtworks(): Promise<Artwork[]> {
   const { data, error } = await supabase
     .from("artworks")
     .select(
-      "id, artist_id, title, description, technique, year, image_url, created_at, updated_at, profiles(name, bio, technique, portfolio_url)",
+      "id, artist_id, title, description, technique, year, image_url, created_at, updated_at, profiles(name, bio, technique, portfolio_url, avatar_url)",
     )
     .order("created_at", { ascending: false });
 
@@ -31,6 +31,7 @@ export function groupByArtist(artworks: Artwork[]): ArtistGroup[] {
         bio: art.profiles?.bio ?? null,
         technique: art.profiles?.technique ?? null,
         portfolio_url: art.profiles?.portfolio_url ?? null,
+        avatar_url: art.profiles?.avatar_url ?? null,
         latestArtwork: art,
         artworks: [art],
         count: 1,

@@ -8,6 +8,7 @@ export interface Profile {
   bio: string | null;
   technique: string | null;
   portfolio_url: string | null;
+  avatar_url: string | null;
   role: Role;
   status: Status;
   created_at: string;
@@ -23,7 +24,10 @@ export interface Artwork {
   image_url: string | null;
   created_at: string;
   updated_at: string;
-  profiles?: Pick<Profile, "name" | "bio" | "technique" | "portfolio_url">;
+  profiles?: Pick<
+    Profile,
+    "name" | "bio" | "technique" | "portfolio_url" | "avatar_url"
+  >;
 }
 
 export interface ArtistGroup {
@@ -32,6 +36,7 @@ export interface ArtistGroup {
   bio: string | null;
   technique: string | null;
   portfolio_url: string | null;
+  avatar_url: string | null;
   latestArtwork: Artwork;
   artworks: Artwork[];
   count: number;

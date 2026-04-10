@@ -64,17 +64,27 @@ export default function ArtistModal({ group, onClose }: Props) {
 
               {/* Artist info */}
               <div className="relative px-6 pb-8 pt-12 text-center sm:px-10 sm:pb-10 sm:pt-14">
-                {/* Initials avatar */}
-                <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-gold-accent/30 bg-gold-accent/10 sm:h-20 sm:w-20">
-                  <span className="font-heading text-2xl text-gold-accent sm:text-3xl">
-                    {group.name
-                      .split(" ")
-                      .map((w) => w[0])
-                      .join("")
-                      .slice(0, 2)
-                      .toUpperCase()}
-                  </span>
-                </div>
+                {/* Avatar */}
+                {group.avatar_url ? (
+                  <img
+                    src={group.avatar_url}
+                    alt={group.name}
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="mx-auto mb-5 h-16 w-16 rounded-full border border-gold-accent/30 object-cover select-none sm:h-20 sm:w-20"
+                  />
+                ) : (
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-gold-accent/30 bg-gold-accent/10 sm:h-20 sm:w-20">
+                    <span className="font-heading text-2xl text-gold-accent sm:text-3xl">
+                      {group.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()}
+                    </span>
+                  </div>
+                )}
 
                 <h2 className="font-heading text-3xl tracking-wide text-white sm:text-4xl">
                   {group.name}
